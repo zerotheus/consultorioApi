@@ -1,23 +1,22 @@
 package apis.ifba.consultorio_api.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Endereco {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long numero;
-    @Id
     private String uf;
-    @Id
     private String complemento;
-    @Id
     private String bairro;
-    @Id
     private String cidade;
-    @Id
     private String cep;
-    @Id
     private String logradouro;
 
 }

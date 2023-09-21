@@ -1,4 +1,4 @@
-package apis.ifba.consultorio_api.model;
+package apis.ifba.consultorio_api.model.campos;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
