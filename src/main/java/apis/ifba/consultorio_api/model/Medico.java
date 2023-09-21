@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,8 @@ public class Medico {
     private Email email;
     @Embedded
     private Telefone telefone;
+    @OneToOne
+    private Endereco endereco;
     private String nome;
     @Enumerated(EnumType.STRING)
     private Especialidade especialidade;
