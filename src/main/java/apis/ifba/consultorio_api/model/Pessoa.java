@@ -1,6 +1,5 @@
 package apis.ifba.consultorio_api.model;
 
-import apis.ifba.consultorio_api.model.campos.CPF;
 import apis.ifba.consultorio_api.model.campos.DadosCadastrais;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -8,18 +7,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
-@Entity(name = "Pacientes")
-public class Paciente {
+@Entity(name = "Pessoas")
+public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    private Pessoa pessoa;
     @Embedded
-    private CPF cpf;
-
-
+    private DadosCadastrais dadosCadastrais;
+    @ManyToOne
+    private Endereco endereco;
 }

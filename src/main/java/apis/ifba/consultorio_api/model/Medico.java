@@ -21,10 +21,8 @@ public class Medico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Embedded
-    private DadosCadastrais dadosCadastrais;
     @OneToOne
-    private Endereco endereco;
+    private Pessoa pessoa;
     @Enumerated(EnumType.STRING)
     private Especialidade especialidade;
     private String CRM;
