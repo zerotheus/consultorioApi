@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import apis.ifba.consultorio_api.interfaces.ValidacaodeCPF;
 
-public class CPFCreator implements ValidacaodeCPF {
+public class CPFForm implements ValidacaodeCPF {
 
     private final String cpf;
 
     @JsonCreator
-    CPFCreator(String cpf) throws Exception {
+    CPFForm(String cpf) throws Exception {
         validaCPF(cpf);
         this.cpf = cpf;
     }
