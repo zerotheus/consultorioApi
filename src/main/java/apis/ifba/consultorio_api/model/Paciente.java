@@ -11,10 +11,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity(name = "Pacientes")
 @Setter
 @Getter
+@ToString
 public class Paciente {
 
     @Id
