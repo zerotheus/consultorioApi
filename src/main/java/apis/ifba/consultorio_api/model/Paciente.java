@@ -9,8 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name = "Pacientes")
+@Setter
+@Getter
 public class Paciente {
 
     @Id
@@ -20,6 +24,5 @@ public class Paciente {
     private Pessoa pessoa;
     @Embedded
     private CPF cpf;
-
 
 }
