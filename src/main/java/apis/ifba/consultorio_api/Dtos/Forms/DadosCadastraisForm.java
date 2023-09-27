@@ -20,4 +20,8 @@ public class DadosCadastraisForm {
         this.nome = nome;
     }
 
+    public String getTelefone() {
+        return this.telefone.toString();
+    }
+
 }

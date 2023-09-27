@@ -17,7 +17,10 @@ public class PacienteForm {
     public PacienteForm(@JsonProperty("pessoa") PessoaForm pessoa, @JsonProperty("CPF") CPFForm cpf) {
         this.pessoa = pessoa;
         this.cpf = cpf;
-        
+    }
+
+    public String getCPF() {
+        return this.cpf.toString();
     }
 
 }
