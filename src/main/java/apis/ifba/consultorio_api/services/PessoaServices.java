@@ -3,7 +3,6 @@ package apis.ifba.consultorio_api.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import apis.ifba.consultorio_api.model.Endereco;
@@ -53,16 +52,18 @@ public class PessoaServices {
 
     // Como pessoa esta é uma entidade necessaria para existir tanto medico quanto
     // paciente recebo a pessoa diretamente
-    public ResponseEntity<Pessoa> editaPessoa(Long id, Pessoa edicoesParaPessoa) {
-        /*
-         * Optional<Pessoa> pessoaASerEditada = encontraPessoaPeloId(id);
-         * return pessoaASerEditada.map(pessoaEmEdicao -> {
-         * pessoaEmEdicao.setDadosCadastrais(null);
-         * pessoaEmEdicao.setEndereco(null);
-         * final Pessoa pessoaEditada = pessoaEmEdicao;
-         * return ResponseEntity.created(null).body(pessoaEditada);
-         * }).orElse(ResponseEntity.notFound().build());
-         */
+    public Pessoa editaPessoa(Long id, Pessoa edicoesParaPessoa) {
+        Optional<Pessoa> pessoaASerEditada = encontraPessoaPeloId(id);
+        return pessoaASerEditada.map(pessoaEmEdicao -> {
+            pessoaEmEdicao.setDadosCadastrais(edicoesParaPessoa.getDadosCadastrais());
+            pessoaEmEdicao.setEndereco(edicoesParaPessoa.getEndereco());
+            enderecoRepository.save(edicoesParaPessoa.getEndereco());
+            pessoaRepository.save(pessoaEmEdicao);
+            return pessoaEmEdicao;
+        }).orElse(null);
+    }
+
+    private Endereco enderecoJaEstaCadastrado(Endereco endereco) {
         return null;
     }
 
