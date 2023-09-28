@@ -27,7 +27,7 @@ public class PacienteController {
 
     @PutMapping("/Edit/{id}")
     public ResponseEntity<Paciente> editaPaciente(@PathVariable Long id, @RequestBody PacienteForm paciente) {
-        return null;
+        return pacienteServices.editaPaciente(id, paciente);
     }
 
 }
