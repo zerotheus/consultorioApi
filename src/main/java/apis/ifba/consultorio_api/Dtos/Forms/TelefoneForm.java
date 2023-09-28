@@ -3,7 +3,6 @@ package apis.ifba.consultorio_api.Dtos.Forms;
 import lombok.Getter;
 import lombok.ToString;
 
-@ToString
 @Getter
 public class TelefoneForm {
 
@@ -25,6 +24,11 @@ public class TelefoneForm {
 
     private boolean ehUmNumero(char digito) {
         return Character.isDigit(digito);
+    }
+
+    @Override
+    public String toString() {
+        return this.getTelefone();
     }
 
 }

@@ -2,9 +2,7 @@ package apis.ifba.consultorio_api.Dtos.Forms;
 
 import apis.ifba.consultorio_api.interfaces.ValidacaodeCPF;
 import lombok.Getter;
-import lombok.ToString;
 
-@ToString
 @Getter
 public class CPFForm implements ValidacaodeCPF {
 
@@ -14,5 +12,12 @@ public class CPFForm implements ValidacaodeCPF {
         // validaCPF(cpf);
         this.cpf = cpf;
     }
+
+    @Override
+    public String toString() {
+        return this.getCpf();
+    }
+
+    
 
 }
