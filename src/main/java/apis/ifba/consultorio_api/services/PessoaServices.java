@@ -1,8 +1,12 @@
 package apis.ifba.consultorio_api.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import apis.ifba.consultorio_api.Dtos.Forms.PessoaForm;
 import apis.ifba.consultorio_api.model.Endereco;
 import apis.ifba.consultorio_api.model.Pessoa;
 import apis.ifba.consultorio_api.repository.EnderecoRepository;
@@ -21,29 +25,46 @@ public class PessoaServices {
     private EnderecoRepository enderecoRepository;
 
     public Pessoa cadastraPessoa(Pessoa pessoa) {
-        /*
-         * if (pessoaJaCadastrada(pessoa)) {
-         * return pessoa;
-         * }
-         */
+        if (pessoaJaCadastrada(pessoa).isPresent()) {
+            return pessoa;
+        }
         cadastraEndereco(pessoa.getEndereco());
         return pessoaRepository.save(pessoa);
     }
 
-    public Boolean pessoaJaCadastrada(Pessoa pessoa) {
-        System.out.println(pessoa.getDadosCadastrais().getEmail().toString());
-        Pessoa pessoaEncontrada = pessoaRepository.findByEmail(pessoa.getDadosCadastrais().getEmail().toString());
-        if (pessoaEncontrada != null) {
-            pessoa = pessoaEncontrada;
-            System.out.println(pessoaEncontrada);
-            return true;
+    public Optional<Pessoa> pessoaJaCadastrada(Pessoa pessoa) {
+        // System.out.println(pessoa.getDadosCadastrais().getEmail().toString());
+        Optional<Pessoa> pessoaEncontrada = pessoaRepository
+                .findByEmail(pessoa.getDadosCadastrais().getEmail().toString());
+        if (pessoaEncontrada.isPresent()) {
+            pessoa = pessoaEncontrada.get();
+            return pessoaEncontrada;
         }
-        return false;
+        return null;
     }
 
     private Endereco cadastraEndereco(Endereco endereco) {
         // System.out.println("Endereco\n" + endereco + "\n");
         return enderecoRepository.save(endereco);
+    }
+
+    public Optional<Pessoa> encontraPessoaPeloId(Long id) {
+        return pessoaRepository.findById(id);
+    }
+
+    // Como pessoa esta é uma entidade necessaria para existir tanto medico quanto
+    // paciente recebo a pessoa diretamente
+    public ResponseEntity<Pessoa> editaPessoa(Long id, Pessoa edicoesParaPessoa) {
+        /*
+         * Optional<Pessoa> pessoaASerEditada = encontraPessoaPeloId(id);
+         * return pessoaASerEditada.map(pessoaEmEdicao -> {
+         * pessoaEmEdicao.setDadosCadastrais(null);
+         * pessoaEmEdicao.setEndereco(null);
+         * final Pessoa pessoaEditada = pessoaEmEdicao;
+         * return ResponseEntity.created(null).body(pessoaEditada);
+         * }).orElse(ResponseEntity.notFound().build());
+         */
+        return null;
     }
 
 }
