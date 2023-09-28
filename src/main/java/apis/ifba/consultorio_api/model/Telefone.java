@@ -10,9 +10,15 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Telefone {
 
     private String telefone;
+
+    @Override
+    public String toString() {
+        return this.getTelefone();
+    }
+
+    
 
 }
