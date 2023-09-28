@@ -2,7 +2,6 @@ package apis.ifba.consultorio_api.adapter;
 
 import apis.ifba.consultorio_api.Dtos.Forms.PacienteForm;
 import apis.ifba.consultorio_api.model.Paciente;
-import apis.ifba.consultorio_api.model.Pessoa;
 import apis.ifba.consultorio_api.model.campos.CPF;
 
 public class PacienteAdapter {

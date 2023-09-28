@@ -1,7 +1,5 @@
 package apis.ifba.consultorio_api.Dtos.Forms;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import apis.ifba.consultorio_api.interfaces.ValidacaodeCPF;
 import lombok.Getter;
 import lombok.ToString;

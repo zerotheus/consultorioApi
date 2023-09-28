@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import apis.ifba.consultorio_api.Dtos.Forms.PessoaForm;
 import apis.ifba.consultorio_api.model.Endereco;
 import apis.ifba.consultorio_api.model.Pessoa;
 import apis.ifba.consultorio_api.repository.EnderecoRepository;
