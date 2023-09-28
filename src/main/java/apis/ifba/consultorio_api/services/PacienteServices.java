@@ -51,8 +51,14 @@ public class PacienteServices {
         }
         final PacienteAdapter pacienteAdapter = new PacienteAdapter(pacienteFormComEdicoes);
         final Paciente pacienteComEdicoes = pacienteAdapter.convertePacienteForm();
-        pessoaServices.editaPessoa(pacienteAserEditado.get().getId(), pacienteComEdicoes.getPessoa());
-        return null;
+        final Pessoa pessoaComEdicoes = pessoaServices.editaPessoa(id, pacienteComEdicoes.getPessoa());
+        return pacienteAserEditado.map(pacienteEmEdicao -> {
+            pacienteEmEdicao.setCpf(pacienteComEdicoes.getCpf());
+            pacienteEmEdicao.setPessoa(pessoaComEdicoes);
+            pacienteRepository.save(pacienteEmEdicao);
+            System.out.println(pacienteComEdicoes);
+            return ResponseEntity.created(null).body(pacienteEmEdicao);
+        }).orElse(ResponseEntity.badRequest().build());
     }
 
 }
