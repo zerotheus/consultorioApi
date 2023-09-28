@@ -1,5 +1,6 @@
 package apis.ifba.consultorio_api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Endereco {
     private String complemento;
     private String bairro;
     private String cidade;
+    @Column(unique = true)
     private String cep;
     private String logradouro;
 
