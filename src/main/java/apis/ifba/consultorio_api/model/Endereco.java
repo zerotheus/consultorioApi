@@ -1,19 +1,17 @@
 package apis.ifba.consultorio_api.model;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity(name = "Enderecos")
+@Table(uniqueConstraints = @UniqueConstraint(name = "Cep Unico", columnNames = { "cep" }))
 @Setter
 @Getter
 @ToString
@@ -29,7 +27,5 @@ public class Endereco {
     private String cidade;
     private String cep;
     private String logradouro;
-    // @OneToMany(fetch = FetchType.LAZY)
-    // private List<Pessoa> pessoas;
 
 }

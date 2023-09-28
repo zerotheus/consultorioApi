@@ -1,8 +1,6 @@
 package apis.ifba.consultorio_api.model;
 
 import apis.ifba.consultorio_api.enums.Especialidade;
-import apis.ifba.consultorio_api.model.campos.DadosCadastrais;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

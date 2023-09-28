@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity(name = "Pessoas")
-// @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(uniqueConstraints = @UniqueConstraint(name = "Email unico", columnNames = "email"))
 @Setter
 @Getter
 @AllArgsConstructor
