@@ -1,6 +1,7 @@
 package apis.ifba.consultorio_api.model;
 
 import apis.ifba.consultorio_api.model.campos.DadosCadastrais;
+import apis.ifba.consultorio_api.model.campos.Email;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,4 +32,8 @@ public class Pessoa {
     private DadosCadastrais dadosCadastrais;
     @ManyToOne
     private Endereco endereco;
+
+    public Email getEmail() {
+        return this.getDadosCadastrais().getEmail();
+    }
 }

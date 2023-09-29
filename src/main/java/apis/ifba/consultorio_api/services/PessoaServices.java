@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import apis.ifba.consultorio_api.model.Endereco;
 import apis.ifba.consultorio_api.model.Pessoa;
+import apis.ifba.consultorio_api.model.campos.Email;
 import apis.ifba.consultorio_api.repository.EnderecoRepository;
 import apis.ifba.consultorio_api.repository.PessoaRepository;
 import lombok.AllArgsConstructor;
@@ -20,13 +21,13 @@ public class PessoaServices {
     @Autowired
     private PessoaRepository pessoaRepository;
     @Autowired
-    private EnderecoRepository enderecoRepository;
+    private EnderecoServices enderecoServices;
 
     public Pessoa cadastraPessoa(Pessoa pessoa) {
         if (pessoaJaCadastrada(pessoa).isPresent()) {
             return pessoa;
         }
-        cadastraEndereco(pessoa.getEndereco());
+        pessoa.setEndereco(enderecoServices.cadastraEndereco(pessoa.getEndereco()));
         return pessoaRepository.save(pessoa);
     }
 
@@ -38,12 +39,7 @@ public class PessoaServices {
             pessoa = pessoaEncontrada.get();
             return pessoaEncontrada;
         }
-        return null;
-    }
-
-    private Endereco cadastraEndereco(Endereco endereco) {
-        // System.out.println("Endereco\n" + endereco + "\n");
-        return enderecoRepository.save(endereco);
+        return pessoaEncontrada;
     }
 
     public Optional<Pessoa> encontraPessoaPeloId(Long id) {
@@ -57,14 +53,17 @@ public class PessoaServices {
         return pessoaASerEditada.map(pessoaEmEdicao -> {
             pessoaEmEdicao.setDadosCadastrais(edicoesParaPessoa.getDadosCadastrais());
             pessoaEmEdicao.setEndereco(edicoesParaPessoa.getEndereco());
-            enderecoRepository.save(edicoesParaPessoa.getEndereco());
+            enderecoServices.cadastraEndereco(edicoesParaPessoa.getEndereco());
             pessoaRepository.save(pessoaEmEdicao);
             return pessoaEmEdicao;
         }).orElse(null);
     }
 
-    private Endereco enderecoJaEstaCadastrado(Endereco endereco) {
-        return null;
+    private void existeAlteracaoNoEmail(Email emailParaSerEditado, Email emailQueNaoDeveriaSerEditado)
+            throws Exception {
+        if (emailParaSerEditado.equals(emailQueNaoDeveriaSerEditado)) {
+            throw new Exception("Email nao deveria ser editado");
+        }
     }
 
 }

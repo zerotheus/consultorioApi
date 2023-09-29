@@ -28,6 +28,7 @@ public class PacienteServices {
             cadastroJaEstaRelacionadoAoutroPaciente(paciente.getPessoa());
             return ResponseEntity.badRequest().build();
         }
+        pessoaServices.cadastraPessoa(paciente.getPessoa());
         return ResponseEntity.created(null).body(pacienteRepository.save(paciente));
     }
 
