@@ -4,11 +4,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import apis.ifba.consultorio_api.model.Endereco;
 import apis.ifba.consultorio_api.model.Pessoa;
 import apis.ifba.consultorio_api.model.campos.Email;
-import apis.ifba.consultorio_api.repository.EnderecoRepository;
 import apis.ifba.consultorio_api.repository.PessoaRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -53,17 +50,10 @@ public class PessoaServices {
         return pessoaASerEditada.map(pessoaEmEdicao -> {
             pessoaEmEdicao.setDadosCadastrais(edicoesParaPessoa.getDadosCadastrais());
             pessoaEmEdicao.setEndereco(edicoesParaPessoa.getEndereco());
-            enderecoServices.cadastraEndereco(edicoesParaPessoa.getEndereco());
+            pessoaEmEdicao.setEndereco(enderecoServices.cadastraEndereco(edicoesParaPessoa.getEndereco()));
             pessoaRepository.save(pessoaEmEdicao);
             return pessoaEmEdicao;
         }).orElse(null);
-    }
-
-    private void existeAlteracaoNoEmail(Email emailParaSerEditado, Email emailQueNaoDeveriaSerEditado)
-            throws Exception {
-        if (emailParaSerEditado.equals(emailQueNaoDeveriaSerEditado)) {
-            throw new Exception("Email nao deveria ser editado");
-        }
     }
 
 }
