@@ -3,6 +3,8 @@ package apis.ifba.consultorio_api.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class PacienteServices {
 
     public ResponseEntity<Paciente> cadastraPaciente(PacienteForm pacienteForm) {
         Paciente paciente = adaptaFormularioDePaciente(pacienteForm);
+        paciente.setStatus(true);
         if (jaPossuiAlgumCadastroNoSistema(paciente)) {
             cadastroJaEstaRelacionadoAoutroPaciente(paciente.getPessoa());
             return ResponseEntity.badRequest().build();
@@ -72,6 +75,26 @@ public class PacienteServices {
         }).orElse(ResponseEntity.badRequest().build());
     }
 
+    public ResponseEntity<Paciente> encontraPacientePeloId(Long id) {
+        return pacienteRepository.findById(id).map(pacienteEncontrado -> {
+            return ResponseEntity.ok().body(pacienteEncontrado);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // Setar como inativo ainda, ainda falta o atributo
+    public ResponseEntity<Object> apagaPaciente(Long id) {
+        Optional<Paciente> pacienteAserExcluido = pacienteRepository.findByIdAndStatus(id, true);
+        if (pacienteAserExcluido.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } // Pq as pessoas gostam disso abaixo?
+        return pacienteAserExcluido.map(pacienteEmExclusao -> {
+            pacienteEmExclusao.setStatus(false);
+            pacienteRepository.save(pacienteEmExclusao);
+            System.out.println(pacienteEmExclusao);
+            return ResponseEntity.noContent().build();
+        }).orElse(ResponseEntity.badRequest().build());
+    }
+
     public void validaEdicoes(Paciente paciente, PacienteForm pacienteForm) throws Exception {
         final RegrasEspecificasDePaciente regras = new RegrasPaciente(paciente, pacienteForm);
         regras.validar();
@@ -80,6 +103,11 @@ public class PacienteServices {
     public Paciente adaptaFormularioDePaciente(PacienteForm pacienteForm) {
         final PacienteAdapter pacienteAdapter = new PacienteAdapter(pacienteForm);
         return pacienteAdapter.convertePacienteForm();
+    }
+
+    public Page<Paciente> listaPacientes(Pageable pageable) {
+        System.out.println(pacienteRepository.findAll(pageable).getNumberOfElements());
+        return pacienteRepository.findAll(pageable);
     }
 
 }
