@@ -1,7 +1,6 @@
 package apis.ifba.consultorio_api.Dtos.Forms;
 
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 public class TelefoneForm {
