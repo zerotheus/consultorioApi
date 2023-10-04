@@ -31,8 +31,8 @@ public class PacienteServices {
         Paciente paciente = adaptaFormularioDePaciente(pacienteForm);
         paciente.setStatus(true);
         if (jaPossuiAlgumCadastroNoSistema(paciente)) {
-            cadastroJaEstaRelacionadoAoutroPaciente(paciente.getPessoa());
-            return ResponseEntity.badRequest().build();
+            if (cadastroJaEstaRelacionadoAoutroPaciente(paciente.getPessoa()))
+                throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Ja possui cadastro deste Paciente");
         }
         pessoaServices.cadastraPessoa(paciente.getPessoa());
         return ResponseEntity.created(null).body(pacienteRepository.save(paciente));
