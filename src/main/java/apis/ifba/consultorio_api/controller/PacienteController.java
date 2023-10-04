@@ -37,7 +37,7 @@ public class PacienteController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Paciente> editaPaciente(@PathVariable Long id) {
+    public ResponseEntity<Paciente> listPaciente(@PathVariable Long id) {
         return pacienteServices.encontraPacientePeloId(id);
     }
 
@@ -48,7 +48,6 @@ public class PacienteController {
 
     @GetMapping("/list/{page}")
     public ResponseEntity<Page<Paciente>> listaPacientes(@PathVariable int page) {
-        // Pageable pageable = PageRequest.of(page, 10);
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.ASC, "pessoa.dadosCadastrais.nome"));
         return ResponseEntity.ok().body(pacienteServices.listaPacientes(pageable));
     }

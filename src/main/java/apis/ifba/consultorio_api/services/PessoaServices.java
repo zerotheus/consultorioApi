@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import apis.ifba.consultorio_api.model.Pessoa;
-import apis.ifba.consultorio_api.model.campos.Email;
 import apis.ifba.consultorio_api.repository.PessoaRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,6 @@ public class PessoaServices {
     }
 
     public Optional<Pessoa> pessoaJaCadastrada(Pessoa pessoa) {
-        // System.out.println(pessoa.getDadosCadastrais().getEmail().toString());
         Optional<Pessoa> pessoaEncontrada = pessoaRepository
                 .findByEmail(pessoa.getDadosCadastrais().getEmail().toString());
         if (pessoaEncontrada.isPresent()) {
