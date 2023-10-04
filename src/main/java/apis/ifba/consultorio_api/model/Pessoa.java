@@ -2,6 +2,7 @@ package apis.ifba.consultorio_api.model;
 
 import apis.ifba.consultorio_api.model.campos.DadosCadastrais;
 import apis.ifba.consultorio_api.model.campos.Email;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,7 @@ public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pessoa_Id")
     private Long id;
     @Embedded
     private DadosCadastrais dadosCadastrais;

@@ -1,6 +1,7 @@
 package apis.ifba.consultorio_api.model;
 
 import apis.ifba.consultorio_api.model.campos.CPF;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +20,12 @@ public class Paciente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pessoa_Id")
     private Long id;
     @OneToOne
     private Pessoa pessoa;
     @Embedded
     private CPF cpf;
+    private Boolean status;
 
 }
