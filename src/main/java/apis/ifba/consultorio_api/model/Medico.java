@@ -1,5 +1,10 @@
 package apis.ifba.consultorio_api.model;
 
+import java.time.LocalTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import apis.ifba.consultorio_api.enums.Especialidade;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,5 +32,10 @@ public class Medico {
     private Especialidade especialidade;
     private String CRM;
     private Boolean status;
+
+    @CreationTimestamp
+    private LocalTime created;
+    @UpdateTimestamp
+    private LocalTime update;
 
 }

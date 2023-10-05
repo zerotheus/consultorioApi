@@ -1,5 +1,10 @@
 package apis.ifba.consultorio_api.model;
 
+import java.time.LocalTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import apis.ifba.consultorio_api.model.campos.CPF;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -27,5 +32,10 @@ public class Paciente {
     @Embedded
     private CPF cpf;
     private Boolean status;
+
+    @CreationTimestamp
+    private LocalTime created;
+    @UpdateTimestamp
+    private LocalTime update;
 
 }

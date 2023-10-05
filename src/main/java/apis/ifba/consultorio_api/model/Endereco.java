@@ -1,5 +1,10 @@
 package apis.ifba.consultorio_api.model;
 
+import java.time.LocalTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +34,10 @@ public class Endereco {
     @Column(unique = true)
     private String cep;
     private String logradouro;
+
+    @CreationTimestamp
+    private LocalTime created;
+    @UpdateTimestamp
+    private LocalTime update;
 
 }

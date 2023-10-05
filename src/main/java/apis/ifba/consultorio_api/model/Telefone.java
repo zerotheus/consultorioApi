@@ -18,6 +18,4 @@ public class Telefone {
         return this.getTelefone();
     }
 
-    
-
 }
