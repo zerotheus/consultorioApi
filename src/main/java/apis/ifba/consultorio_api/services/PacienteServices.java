@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import apis.ifba.consultorio_api.Dtos.Forms.PacienteForm;
+import apis.ifba.consultorio_api.Dtos.dto.PacienteDTO;
 import apis.ifba.consultorio_api.adapter.PacienteAdapter;
 import apis.ifba.consultorio_api.interfaces.RegrasEspecificasDePaciente;
 import apis.ifba.consultorio_api.interfaces.RegrasPaciente;
@@ -27,7 +28,7 @@ public class PacienteServices {
     private PacienteRepository pacienteRepository;
     private PessoaServices pessoaServices;
 
-    public ResponseEntity<Paciente> cadastraPaciente(PacienteForm pacienteForm) {
+    public ResponseEntity<PacienteDTO> cadastraPaciente(PacienteForm pacienteForm) {
         Paciente paciente = adaptaFormularioDePaciente(pacienteForm);
         paciente.setStatus(true);
         if (jaPossuiAlgumCadastroNoSistema(paciente)) {
@@ -35,7 +36,8 @@ public class PacienteServices {
                 throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Ja possui cadastro deste Paciente");
         }
         pessoaServices.cadastraPessoa(paciente.getPessoa());
-        return ResponseEntity.created(null).body(pacienteRepository.save(paciente));
+        pacienteRepository.save(paciente);
+        return ResponseEntity.created(null).body(new PacienteDTO(paciente));
     }
 
     private boolean jaPossuiAlgumCadastroNoSistema(Paciente paciente) {
@@ -51,7 +53,7 @@ public class PacienteServices {
         return pacienteRepository.findByPessoa(pessoa).isPresent();
     }
 
-    public ResponseEntity<Paciente> editaPaciente(Long id, PacienteForm pacienteFormComEdicoes) {
+    public ResponseEntity<PacienteDTO> editaPaciente(Long id, PacienteForm pacienteFormComEdicoes) {
         Optional<Paciente> pacienteAserEditado = pacienteRepository.findById(id);
         if (pacienteAserEditado.isEmpty()) {
             ResponseEntity.notFound().build();
@@ -71,13 +73,13 @@ public class PacienteServices {
             pacienteEmEdicao.setPessoa(pessoaComEdicoes);
             pacienteRepository.save(pacienteEmEdicao);
             System.out.println(pacienteComEdicoes);
-            return ResponseEntity.created(null).body(pacienteEmEdicao);
+            return ResponseEntity.created(null).body(new PacienteDTO(pacienteEmEdicao));
         }).orElse(ResponseEntity.badRequest().build());
     }
 
-    public ResponseEntity<Paciente> encontraPacientePeloId(Long id) {
-        return pacienteRepository.findById(id).map(pacienteEncontrado -> {
-            return ResponseEntity.ok().body(pacienteEncontrado);
+    public ResponseEntity<PacienteDTO> encontraPacientePeloId(Long id) {
+        return pacienteRepository.findByIdAndStatus(id, true).map(pacienteEncontrado -> {
+            return ResponseEntity.ok().body(new PacienteDTO(pacienteEncontrado));
         }).orElse(ResponseEntity.notFound().build());
     }
 
@@ -106,7 +108,6 @@ public class PacienteServices {
     }
 
     public Page<Paciente> listaPacientes(Pageable pageable) {
-        System.out.println(pacienteRepository.findAll(pageable).getNumberOfElements());
         return pacienteRepository.findAll(pageable);
     }
 

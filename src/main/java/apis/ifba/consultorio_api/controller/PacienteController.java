@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import apis.ifba.consultorio_api.Dtos.Forms.PacienteForm;
+import apis.ifba.consultorio_api.Dtos.dto.PacienteDTO;
 import apis.ifba.consultorio_api.model.Paciente;
 import apis.ifba.consultorio_api.services.PacienteServices;
 
@@ -27,17 +28,17 @@ public class PacienteController {
     private PacienteServices pacienteServices;
 
     @PostMapping("/Register")
-    public ResponseEntity<Paciente> cadastraPaciente(@RequestBody PacienteForm paciente) {
+    public ResponseEntity<PacienteDTO> cadastraPaciente(@RequestBody PacienteForm paciente) {
         return pacienteServices.cadastraPaciente(paciente);
     }
 
     @PutMapping("/Edit/{id}")
-    public ResponseEntity<Paciente> editaPaciente(@PathVariable Long id, @RequestBody PacienteForm paciente) {
+    public ResponseEntity<PacienteDTO> editaPaciente(@PathVariable Long id, @RequestBody PacienteForm paciente) {
         return pacienteServices.editaPaciente(id, paciente);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Paciente> listPaciente(@PathVariable Long id) {
+    public ResponseEntity<PacienteDTO> listPaciente(@PathVariable Long id) {
         return pacienteServices.encontraPacientePeloId(id);
     }
 
