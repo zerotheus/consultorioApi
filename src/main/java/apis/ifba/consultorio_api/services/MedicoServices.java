@@ -93,7 +93,7 @@ public class MedicoServices {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Medico> apagaMedico(Long id) {
+    public ResponseEntity<Object> apagaMedico(Long id) {
         Optional<Medico> medicoAserEditado = medicoRepository.findById(id);
         if (medicoAserEditado.isEmpty()) {
             ResponseEntity.notFound().build();
@@ -103,7 +103,7 @@ public class MedicoServices {
             medicoEmEdicao.setStatus(false);
             medicoRepository.save(medicoEmEdicao);
             System.out.println(medicoEmEdicao);
-            return ResponseEntity.created(null).body(medicoEmEdicao);
+            return ResponseEntity.noContent().build();
         }).orElse(ResponseEntity.badRequest().build());
     }
 
