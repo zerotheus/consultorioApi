@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import apis.ifba.consultorio_api.Dtos.Forms.MedicoForm;
 import apis.ifba.consultorio_api.Dtos.Forms.PacienteForm;
+import apis.ifba.consultorio_api.Dtos.dto.MedicoDto;
 import apis.ifba.consultorio_api.adapter.MedicoAdapter;
 import apis.ifba.consultorio_api.interfaces.Regra;
 import apis.ifba.consultorio_api.interfaces.RegrasMedico;
@@ -27,7 +28,7 @@ public class MedicoServices {
     private MedicoRepository medicoRepository;
     private PessoaServices pessoaServices;
 
-    public ResponseEntity<Medico> cadastraMedico(MedicoForm medicoForm) {
+    public ResponseEntity<MedicoDto> cadastraMedico(MedicoForm medicoForm) {
         Medico medico = adaptaFormularioDeMedico(medicoForm);
         if (jaPossuiCadastro(medico)) {
             if (cadastroEstaRelacionadoComOutroMedico(medico)) {
@@ -35,7 +36,8 @@ public class MedicoServices {
             }
         }
         pessoaServices.cadastraPessoa(medico.getPessoa());
-        return ResponseEntity.created(null).body(medicoRepository.save(medico));
+        medicoRepository.save(medico);
+        return ResponseEntity.created(null).body(new MedicoDto(medico));
     }
 
     public boolean jaPossuiCadastro(Medico medico) {
@@ -51,7 +53,7 @@ public class MedicoServices {
         return medicoRepository.findByPessoa(medico.getPessoa()).isPresent();
     }
 
-    public ResponseEntity<Medico> editaMedico(Long id, MedicoForm medicoFormComEdicoes) {
+    public ResponseEntity<MedicoDto> editaMedico(Long id, MedicoForm medicoFormComEdicoes) {
         Optional<Medico> medicoAserEditado = medicoRepository.findById(id);
         if (medicoAserEditado.isEmpty()) {
             ResponseEntity.notFound().build();
@@ -73,7 +75,7 @@ public class MedicoServices {
             medicoEmEdicao.setEspecialidade(medicoComEdicoes.getEspecialidade());
             medicoRepository.save(medicoEmEdicao);
             System.out.println(medicoEmEdicao);
-            return ResponseEntity.created(null).body(medicoEmEdicao);
+            return ResponseEntity.created(null).body(new MedicoDto(medicoComEdicoes));
         }).orElse(ResponseEntity.badRequest().build());
     }
 
@@ -87,9 +89,9 @@ public class MedicoServices {
         return medicoAdapter.converteMedicoForm();
     }
 
-    public ResponseEntity<Medico> encontraUmMedico(Long id) {
+    public ResponseEntity<MedicoDto> encontraUmMedico(Long id) {
         return medicoRepository.findByIdAndStatus(id, true).map(medico -> {
-            return ResponseEntity.ok().body(medico);
+            return ResponseEntity.ok().body(new MedicoDto(medico));
         }).orElse(ResponseEntity.notFound().build());
     }
 
