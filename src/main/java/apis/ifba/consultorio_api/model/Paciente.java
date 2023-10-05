@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import apis.ifba.consultorio_api.model.campos.CPF;
+import apis.ifba.consultorio_api.model.campos.Email;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -37,5 +38,17 @@ public class Paciente {
     private LocalTime created;
     @UpdateTimestamp
     private LocalTime update;
+
+    public Email getEmail() {
+        return this.getPessoa().getEmail();
+    }
+
+    public String getNome() {
+        return this.getPessoa().getNome();
+    }
+
+    public Telefone getTelefone() {
+        return this.getPessoa().getTelefone();
+    }
 
 }

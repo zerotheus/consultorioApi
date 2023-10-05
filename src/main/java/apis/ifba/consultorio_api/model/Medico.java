@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import apis.ifba.consultorio_api.enums.Especialidade;
+import apis.ifba.consultorio_api.model.campos.Email;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -37,5 +38,17 @@ public class Medico {
     private LocalTime created;
     @UpdateTimestamp
     private LocalTime update;
+
+    public Email getEmail() {
+        return this.getPessoa().getEmail();
+    }
+
+    public String getNome() {
+        return this.getPessoa().getNome();
+    }
+
+    public Telefone getTelefone() {
+        return this.getPessoa().getTelefone();
+    }
 
 }

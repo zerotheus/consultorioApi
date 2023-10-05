@@ -38,4 +38,12 @@ public class Pessoa {
     public Email getEmail() {
         return this.getDadosCadastrais().getEmail();
     }
+
+    public String getNome() {
+        return this.getDadosCadastrais().getNome();
+    }
+
+    public Telefone getTelefone() {
+        return this.getDadosCadastrais().getTelefone();
+    }
 }
