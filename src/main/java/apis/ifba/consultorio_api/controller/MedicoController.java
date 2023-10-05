@@ -2,6 +2,7 @@ package apis.ifba.consultorio_api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import apis.ifba.consultorio_api.Dtos.Forms.MedicoForm;
 import apis.ifba.consultorio_api.model.Medico;
+import apis.ifba.consultorio_api.model.Paciente;
 import apis.ifba.consultorio_api.services.MedicoServices;
 
 @RestController
@@ -29,6 +31,11 @@ public class MedicoController {
     public ResponseEntity<Medico> editaMedico(@RequestBody MedicoForm medico, @PathVariable Long id) {
         System.out.println(medico);
         return medicoServices.editaMedico(id, medico);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Medico> listMedico(@PathVariable Long id) {
+        return medicoServices.encontraUmMedico(id);
     }
 
 }

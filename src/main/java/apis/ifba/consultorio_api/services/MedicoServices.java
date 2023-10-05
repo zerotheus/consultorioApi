@@ -87,4 +87,24 @@ public class MedicoServices {
         return medicoAdapter.converteMedicoForm();
     }
 
+    public ResponseEntity<Medico> encontraUmMedico(Long id) {
+        return medicoRepository.findByIdAndStatus(id, true).map(medico -> {
+            return ResponseEntity.ok().body(medico);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<Medico> apagaMedico(Long id) {
+        Optional<Medico> medicoAserEditado = medicoRepository.findById(id);
+        if (medicoAserEditado.isEmpty()) {
+            ResponseEntity.notFound().build();
+        }
+        // Pq as pessoas gostam disso abaixo?
+        return medicoAserEditado.map(medicoEmEdicao -> {
+            medicoEmEdicao.setStatus(false);
+            medicoRepository.save(medicoEmEdicao);
+            System.out.println(medicoEmEdicao);
+            return ResponseEntity.created(null).body(medicoEmEdicao);
+        }).orElse(ResponseEntity.badRequest().build());
+    }
+
 }
