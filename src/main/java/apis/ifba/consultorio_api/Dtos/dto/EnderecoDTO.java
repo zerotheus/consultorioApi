@@ -1,7 +1,11 @@
 package apis.ifba.consultorio_api.Dtos.dto;
 
 import apis.ifba.consultorio_api.model.Endereco;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@ToString
 public class EnderecoDTO {
 
     private final Long numero;
