@@ -30,7 +30,7 @@ public class RegrasPaciente implements RegrasEspecificasDePaciente {
     @Override
     public boolean validar() throws Exception {
         return cpfPermaneceInalterado(paciente.getCpf(), pacienteForm.getCPF())
-                && emailPermaneceInalterado(paciente.getPessoa().getEmail(),
+                && emailPermaneceInalterado(paciente.getEmail(),
                         pacienteForm.getPessoa().getDadosCadastrais().getEmail());
     }
 

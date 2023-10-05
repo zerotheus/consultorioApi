@@ -28,7 +28,7 @@ public class RegrasMedico implements RegrasEspecificasMedico {
 
     @Override
     public boolean validar() throws Exception {
-        return emailPermaneceInalterado(medico.getPessoa().getEmail(),
+        return emailPermaneceInalterado(medico.getEmail(),
                 medicoForm.getPessoa().getDadosCadastrais().getEmail())
                 && crmPermaneceInalterado(medico.getCRM(), medicoForm.getCrm())
                 && especilidadePermaneceInalterada(medico.getEspecialidade(), medicoForm.getEspecialidade());
