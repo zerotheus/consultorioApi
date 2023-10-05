@@ -111,8 +111,8 @@ public class MedicoServices {
         }).orElse(ResponseEntity.badRequest().build());
     }
 
-    public Page<Medico> listaMedicos(Pageable pageable) {
-        return medicoRepository.findAll(pageable);
+    public Page<MedicoDto> listaMedicos(Pageable pageable) {
+        return medicoRepository.findAll(pageable).map(MedicoDto::new);
     }
 
 }
