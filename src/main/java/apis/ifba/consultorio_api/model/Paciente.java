@@ -26,7 +26,7 @@ public class Paciente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pessoa_Id")
+    @Column(name = "Paciente_id")
     private Long id;
     @OneToOne
     private Pessoa pessoa;
