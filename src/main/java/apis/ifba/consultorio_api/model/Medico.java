@@ -39,6 +39,10 @@ public class Medico {
     @UpdateTimestamp
     private LocalTime update;
 
+    public Long getPessoaFK() {
+        return this.getPessoa().getId();
+    }
+
     public Email getEmail() {
         return this.getPessoa().getEmail();
     }
