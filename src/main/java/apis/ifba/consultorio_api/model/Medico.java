@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import apis.ifba.consultorio_api.enums.Especialidade;
 import apis.ifba.consultorio_api.model.campos.Email;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,6 +27,7 @@ public class Medico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Medico_id")
     private Long id;
     @OneToOne
     private Pessoa pessoa;

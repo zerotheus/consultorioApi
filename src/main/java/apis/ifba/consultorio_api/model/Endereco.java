@@ -25,6 +25,7 @@ public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Endereco_Id")
     private Long id;
     private Long numero;
     private String uf;
