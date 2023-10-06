@@ -17,7 +17,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity(name = "Enderecos")
-@Table(uniqueConstraints = @UniqueConstraint(name = "Cep Unico", columnNames = { "cep" }))
+// @Table(uniqueConstraints = @UniqueConstraint(name = "Cep Unico", columnNames
+// = { "cep" }))
 @Setter
 @Getter
 @ToString
@@ -32,7 +33,6 @@ public class Endereco {
     private String complemento;
     private String bairro;
     private String cidade;
-    @Column(unique = true)
     private String cep;
     private String logradouro;
 
