@@ -25,8 +25,7 @@ public class RegrasPaciente implements RegrasEspecificasDePaciente {
         }
         return true;
     }
-
-    // Bad smell na parte do email
+    
     @Override
     public boolean validar() throws Exception {
         return cpfPermaneceInalterado(paciente.getCpf(), pacienteForm.getCPF())

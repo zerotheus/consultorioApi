@@ -83,7 +83,6 @@ public class PacienteServices {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    // Setar como inativo ainda, ainda falta o atributo
     public ResponseEntity<Object> apagaPaciente(Long id) {
         Optional<Paciente> pacienteAserExcluido = pacienteRepository.findByIdAndStatus(id, true);
         if (pacienteAserExcluido.isEmpty()) {
