@@ -20,4 +20,16 @@ public class PessoaForm {
         this.endereco = endereco;
     }
 
+    public String getNome() {
+        return this.dadosCadastrais.getNome();
+    }
+
+    public String getTelefone() {
+        return this.dadosCadastrais.getTelefone();
+    }
+
+    public String getEmail() {
+        return this.dadosCadastrais.getEmail();
+    }
+
 }

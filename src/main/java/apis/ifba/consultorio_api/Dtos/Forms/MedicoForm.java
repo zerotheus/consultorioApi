@@ -27,4 +27,16 @@ public class MedicoForm {
         this.crm = crm;
     }
 
+    public String getNome() {
+        return this.pessoa.getNome();
+    }
+
+    public String getTelefone() {
+        return this.pessoa.getTelefone();
+    }
+
+    public String getEmail() {
+        return this.pessoa.getEmail();
+    }
+
 }
