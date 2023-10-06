@@ -10,4 +10,6 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 
     Optional<Endereco> findByCep(String Cep);
 
+    Optional<Endereco> findByUfAndBairroAndCidadeAndCep(String uf, String cidade, String bairro, String Cep);
+
 }
