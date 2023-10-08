@@ -11,6 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -25,10 +27,10 @@ public class Consulta {
     @Column(name = "consulta_id")
     private Long id;
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "Fk_medico_id")
+    @JoinColumn(name = "FK_Medico_id")
     private Medico medico;
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "Fk_paciente_id")
+    @JoinColumn(name = "FK_Paciente_id")
     private Paciente paciente;
     private LocalTime horario;
     @Enumerated(EnumType.STRING)
