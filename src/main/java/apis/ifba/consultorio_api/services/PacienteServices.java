@@ -64,8 +64,7 @@ public class PacienteServices {
             throw new ResponseStatusException(HttpStatusCode.valueOf(400), e.toString());
         }
         final Paciente pacienteComEdicoes = adaptaFormularioDePaciente(pacienteFormComEdicoes);
-        // bad smell
-        final Pessoa pessoaComEdicoes = pessoaServices.editaPessoa(pacienteAserEditado.get().getPessoa().getId(),
+        final Pessoa pessoaComEdicoes = pessoaServices.editaPessoa(pacienteAserEditado.get().getPessoaFK(),
                 pacienteComEdicoes.getPessoa());
         // Pq as pessoas gostam disso abaixo?
         return pacienteAserEditado.map(pacienteEmEdicao -> {
