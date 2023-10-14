@@ -2,10 +2,6 @@ package apis.ifba.consultorio_api.interfaces;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-
-import org.springframework.http.HttpStatusCode;
-import org.springframework.web.server.ResponseStatusException;
-
 import apis.ifba.consultorio_api.Dtos.Forms.ConsultaForm;
 import lombok.AllArgsConstructor;
 
