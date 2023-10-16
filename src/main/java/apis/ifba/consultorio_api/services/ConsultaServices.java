@@ -1,6 +1,8 @@
 package apis.ifba.consultorio_api.services;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +33,21 @@ public class ConsultaServices {
     public ResponseEntity<Consulta> marcaConsulta(ConsultaForm consultaForm) {
         Consulta consulta = converteParaConsulta(consultaForm);
         estaDentroDasRegras(consultaForm);
+        // consultaRepository.save(consulta);
         return ResponseEntity.created(null).body(consulta);
     }
 
     private Consulta converteParaConsulta(ConsultaForm consultaForm) {
         ConsultaAdapter consultaAdapter = new ConsultaAdapter(consultaForm);
         final Paciente paciente = encontraPaciente(consultaForm);
-        encontraMedico(consultaForm);
-        return consultaAdapter.converteConsulta(paciente, null);// TODO procurar medico e Paciente
+        final Medico medico = encontraMedico(consultaForm);
+        return consultaAdapter.converteConsulta(paciente, medico);// TODO procurar medico e Paciente
     }
 
     private void estaDentroDasRegras(ConsultaForm consultaForm) {
         RegrasDeMarcacaoDeConsulta regras = new RegrasDeMarcacaoDeConsulta(consultaForm);
         try {
-            regras.validar();
+            // regras.validar();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(400), e.toString());
         }
@@ -59,10 +62,21 @@ public class ConsultaServices {
     }
 
     private Medico encontraMedico(ConsultaForm consultaForm) {
+        Medico medico = null;
         if (consultaForm.getMedicoId() == null) {
-            System.out.println(medicoRepository.findAllAvaliable());
+            List<Long> medicosIds = medicoRepository.findAllAvaliable();
+            List<Long> medicosIndi = consultaRepository.medicosDisponiveis(consultaForm.getDataHorario());
+            System.out.println(medicosIds);
+            System.out.println(medicosIndi);
+            System.out.println(medicosIds.removeAll(medicosIndi));
+            System.out.println(medicosIds);//TODO deixar aleatorio
+            // System.out.println(consultaRepository.medicosDisponiveis(medicoRepository.findAllAvaliable()));
+        } else {
+            medico = medicoEstaCadastrado(consultaForm).map(medicoEncontrado -> {
+                return medicoEncontrado;
+            }).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Medico nao encontrado"));
         }
-        return null;
+        return medico;
     }
 
     private Optional<Paciente> pacienteEstaCadastrado(ConsultaForm consultaForm) {
