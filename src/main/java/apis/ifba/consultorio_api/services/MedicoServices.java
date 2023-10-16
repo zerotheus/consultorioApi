@@ -1,5 +1,6 @@
 package apis.ifba.consultorio_api.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,10 @@ public class MedicoServices {
 
     public Page<MedicoDto> listaMedicos(Pageable pageable) {
         return medicoRepository.findAll(pageable).map(MedicoDto::new);
+    }
+
+    public List<Long> listaTodosMedicosDisponiveis() {
+        return medicoRepository.findAllAvaliable();
     }
 
 }
