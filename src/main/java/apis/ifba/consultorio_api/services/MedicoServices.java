@@ -120,4 +120,9 @@ public class MedicoServices {
         return medicoRepository.findAllAvaliable();
     }
 
+    public Medico encontraMedico(Long id) {
+        return medicoRepository.findByIdAndStatus(id, true)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Medico nao encontrado"));
+    }
+
 }

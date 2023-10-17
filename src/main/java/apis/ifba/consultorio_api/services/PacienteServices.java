@@ -109,4 +109,9 @@ public class PacienteServices {
         return pacienteRepository.findAll(pageable);
     }
 
+    public Paciente encontraPaciente(Long id) {
+        return pacienteRepository.findByIdAndStatus(id, true)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Paciente nao encontrado"));
+    }
+
 }
