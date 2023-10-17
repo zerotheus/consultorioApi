@@ -1,8 +1,6 @@
 package apis.ifba.consultorio_api.repository;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,14 +12,14 @@ import apis.ifba.consultorio_api.model.Consulta;
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
     @Query(nativeQuery = true, value = "Select * from consultas where horario > ?2 and fk_paciente_id = ?1")
-    public List<Consulta> jaPossuiConsultaAgendada(@Param(value = "id") Long id, LocalDateTime diaMarcado);// TODO mudar
-                                                                                                           // para a
-                                                                                                           // data e
-                                                                                                           // hora da
-    // consulta
+    public List<Consulta> jaPossuiConsultaAgendada(@Param(value = "id") Long id, LocalDateTime diaMarcado);
 
-    // @Query(nativeQuery = true, value = "select * from (values :ids) as medicos")
-    @Query(nativeQuery = true, value = "SELECT fk_medico_id FROM consultas WHERE horario > :horaMarcada AND estado != 'Cancelada' and fk_medico_id is not null")
-    public List<Long> medicosDisponiveis(@Param("horaMarcada") LocalDateTime horaMarcada);
-    // TODO retirar not null e Renomear query
+    @Query(nativeQuery = true, value = "SELECT fk_medico_id FROM consultas WHERE horario >= :horaMarcada AND horario <= :termino and estado != 'Cancelada'")
+    public List<Long> medicosIndisponiveis(@Param("horaMarcada") LocalDateTime horaMarcada,
+            @Param("termino") LocalDateTime termino);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM consultas WHERE fk_medico_id = :medico and horario >= :horaMarcada AND horario <= :termino and estado != 'Cancelada'")
+    public List<Consulta> medicoSelecionadoEstaDisponivel(@Param("medico") Long id,
+            @Param("horaMarcada") LocalDateTime horaMarcada,
+            @Param("termino") LocalDateTime termino);
 }
