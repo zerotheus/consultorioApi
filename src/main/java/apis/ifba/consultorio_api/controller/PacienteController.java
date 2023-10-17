@@ -48,9 +48,10 @@ public class PacienteController {
     }
 
     @GetMapping("/list/{page}")
-    public ResponseEntity<Page<Paciente>> listaPacientes(@PathVariable int page) {
+    public ResponseEntity<Page<PacienteDTO>> listaPacientes(@PathVariable int page) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.ASC, "pessoa.dadosCadastrais.nome"));
-        return ResponseEntity.ok().body(pacienteServices.listaPacientes(pageable));
+        return ResponseEntity.ok()
+                .body(pacienteServices.listaPacientes(pageable).map(PacienteDTO::new));
     }
 
 }
