@@ -1,10 +1,7 @@
 package apis.ifba.consultorio_api.services;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
-
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +14,6 @@ import apis.ifba.consultorio_api.model.Consulta;
 import apis.ifba.consultorio_api.model.Medico;
 import apis.ifba.consultorio_api.model.Paciente;
 import apis.ifba.consultorio_api.repository.ConsultaRepository;
-import apis.ifba.consultorio_api.repository.MedicoRepository;
-import apis.ifba.consultorio_api.repository.PacienteRepository;
 
 @Service
 public class ConsultaServices {
@@ -26,9 +21,9 @@ public class ConsultaServices {
     @Autowired
     private ConsultaRepository consultaRepository;
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private PacienteServices pacienteServices;
     @Autowired
-    private MedicoRepository medicoRepository;
+    private MedicoServices medicoServices;
 
     public ResponseEntity<Consulta> marcaConsulta(ConsultaForm consultaForm) {
         Consulta consulta = converteParaConsulta(consultaForm);
@@ -41,50 +36,64 @@ public class ConsultaServices {
         ConsultaAdapter consultaAdapter = new ConsultaAdapter(consultaForm);
         final Paciente paciente = encontraPaciente(consultaForm);
         final Medico medico = encontraMedico(consultaForm);
-        return consultaAdapter.converteConsulta(paciente, medico);// TODO procurar medico e Paciente
+        return consultaAdapter.converteConsulta(paciente, medico);
     }
 
     private void estaDentroDasRegras(ConsultaForm consultaForm) {
         RegrasDeMarcacaoDeConsulta regras = new RegrasDeMarcacaoDeConsulta(consultaForm);
         try {
-            // regras.validar();
+            regras.validar();
+            if (!consultaRepository
+                    .jaPossuiConsultaAgendada(consultaForm.getPacienteId(), consultaForm.getDataHorario().withHour(0))
+                    .isEmpty()) {
+                throw new Exception("So e permitido o agendamento de 1 consulta por dia");
+            }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(400), e.toString());
         }
     }
 
     private Paciente encontraPaciente(ConsultaForm consultaForm) {
-        final Optional<Paciente> paciente = pacienteEstaCadastrado(consultaForm);
-        if (paciente.isEmpty()) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "O paciente deve ser informado");
-        }
-        return paciente.get();
+        final Paciente paciente = pacienteEstaCadastrado(consultaForm);
+        return paciente;
     }
 
     private Medico encontraMedico(ConsultaForm consultaForm) {
         Medico medico = null;
         if (consultaForm.getMedicoId() == null) {
-            List<Long> medicosIds = medicoRepository.findAllAvaliable();
-            List<Long> medicosIndi = consultaRepository.medicosDisponiveis(consultaForm.getDataHorario());
-            System.out.println(medicosIds);
-            System.out.println(medicosIndi);
-            System.out.println(medicosIds.removeAll(medicosIndi));
-            System.out.println(medicosIds);//TODO deixar aleatorio
-            // System.out.println(consultaRepository.medicosDisponiveis(medicoRepository.findAllAvaliable()));
+            List<Long> medicosIds = medicoServices.listaTodosMedicosDisponiveis();
+            List<Long> medicosIndi = consultaRepository.medicosIndisponiveis(consultaForm.getDataHorario(),
+                    consultaForm.getDataHorario().plusHours(1));
+            medicosIds.removeAll(medicosIndi);
+            medico = medicoServices.encontraMedico(escolheUmMedicoAleatorio(medicosIds));
         } else {
-            medico = medicoEstaCadastrado(consultaForm).map(medicoEncontrado -> {
-                return medicoEncontrado;
-            }).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Medico nao encontrado"));
+            medico = medicoEstaCadastrado(consultaForm);
+            verificaDisponibilidadeDoMedico(medico.getId(), consultaForm);
         }
         return medico;
     }
 
-    private Optional<Paciente> pacienteEstaCadastrado(ConsultaForm consultaForm) {
-        return pacienteRepository.findByIdAndStatus(consultaForm.getPacienteId(), true);
+    private Paciente pacienteEstaCadastrado(ConsultaForm consultaForm) {
+        return pacienteServices.encontraPaciente(consultaForm.getPacienteId());
     }
 
-    private Optional<Medico> medicoEstaCadastrado(ConsultaForm consultaForm) {
-        return medicoRepository.findByIdAndStatus(consultaForm.getMedicoId(), true);
+    private Medico medicoEstaCadastrado(ConsultaForm consultaForm) {
+        return medicoServices.encontraMedico(consultaForm.getMedicoId());
+    }
+
+    private Long escolheUmMedicoAleatorio(List<Long> medicosList) {
+        if (medicosList.size() == 0) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Medicos indisponiveis neste horario");
+        }
+        final Random random = new Random();
+        return medicosList.get(random.nextInt(0, medicosList.size()));
+    }
+
+    private void verificaDisponibilidadeDoMedico(Long id, ConsultaForm consultaForm) {
+        if (!consultaRepository.medicoSelecionadoEstaDisponivel(id, consultaForm.getDataHorario(),
+                consultaForm.getDataHorario().plusHours(1)).isEmpty()) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Medico nao possui disponibilidade");
+        }
     }
 
 }
