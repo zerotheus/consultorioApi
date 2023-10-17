@@ -39,6 +39,7 @@ public class Consulta {
     private LocalDateTime horario;
     @Enumerated(EnumType.STRING)
     private EstadoConsulta estado;
+    private String motivoDoCancelamento;
 
     @CreationTimestamp
     private LocalTime created;
