@@ -32,8 +32,7 @@ public class ConsultaServices {
     public Consulta marcaConsulta(ConsultaForm consultaForm) {
         Consulta consulta = converteParaConsulta(consultaForm);
         estaDentroDasRegras(consultaForm);
-        // consultaRepository.save(consulta);
-        return consulta;
+        return consultaRepository.save(consulta);
     }
 
     private Consulta converteParaConsulta(ConsultaForm consultaForm) {
