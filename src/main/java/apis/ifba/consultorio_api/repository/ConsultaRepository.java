@@ -13,8 +13,11 @@ import apis.ifba.consultorio_api.model.Consulta;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
-    @Query(nativeQuery = true, value = "Select * from consultas where horario > current_date and fk_paciente_id = ?1")
-    public List<Consulta> jaPossuiConsultaAgendada(@Param(value = "id") Long id);// TODO mudar para a data e hora da
+    @Query(nativeQuery = true, value = "Select * from consultas where horario > ?2 and fk_paciente_id = ?1")
+    public List<Consulta> jaPossuiConsultaAgendada(@Param(value = "id") Long id, LocalDateTime diaMarcado);// TODO mudar
+                                                                                                           // para a
+                                                                                                           // data e
+                                                                                                           // hora da
     // consulta
 
     // @Query(nativeQuery = true, value = "select * from (values :ids) as medicos")
