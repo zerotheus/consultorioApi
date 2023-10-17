@@ -1,5 +1,6 @@
 package apis.ifba.consultorio_api.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,11 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import apis.ifba.consultorio_api.Dtos.Forms.CancelamentoForm;
 import apis.ifba.consultorio_api.Dtos.Forms.ConsultaForm;
 import apis.ifba.consultorio_api.adapter.ConsultaAdapter;
+import apis.ifba.consultorio_api.enums.EstadoConsulta;
 import apis.ifba.consultorio_api.interfaces.RegrasDeMarcacaoDeConsulta;
 import apis.ifba.consultorio_api.model.Consulta;
 import apis.ifba.consultorio_api.model.Medico;
@@ -94,6 +98,22 @@ public class ConsultaServices {
                 consultaForm.getDataHorario().plusHours(1)).isEmpty()) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Medico nao possui disponibilidade");
         }
+    }
+
+    public void cancelar(CancelamentoForm cancelamentoForm) {
+        Consulta consulta = consultaExiste(cancelamentoForm.getConsultaId());
+        if (LocalDateTime.now().plusDays(1).isAfter(consulta.getHorario())) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400),
+                    "Cancelamento tem que possuir 24 horas de atecedencia");
+        }
+        consulta.setMotivoDoCancelamento(cancelamentoForm.getMotivo());
+        consulta.setEstado(EstadoConsulta.Cancelada);
+        consultaRepository.save(consulta);
+    }
+
+    private Consulta consultaExiste(Long id) {
+        return consultaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404), "Consulta nao encontrada"));
     }
 
 }
