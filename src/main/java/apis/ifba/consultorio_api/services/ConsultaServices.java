@@ -25,11 +25,11 @@ public class ConsultaServices {
     @Autowired
     private MedicoServices medicoServices;
 
-    public ResponseEntity<Consulta> marcaConsulta(ConsultaForm consultaForm) {
+    public Consulta marcaConsulta(ConsultaForm consultaForm) {
         Consulta consulta = converteParaConsulta(consultaForm);
         estaDentroDasRegras(consultaForm);
         // consultaRepository.save(consulta);
-        return ResponseEntity.created(null).body(consulta);
+        return consulta;
     }
 
     private Consulta converteParaConsulta(ConsultaForm consultaForm) {
