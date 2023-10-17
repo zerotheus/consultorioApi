@@ -3,7 +3,11 @@ package apis.ifba.consultorio_api.Dtos.dto;
 import java.time.LocalDateTime;
 
 import apis.ifba.consultorio_api.model.Consulta;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@ToString
 public class ConsultaDTO {
 
     private final LocalDateTime horario;
