@@ -2,6 +2,10 @@ package apis.ifba.consultorio_api.interfaces;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.server.ResponseStatusException;
+
 import apis.ifba.consultorio_api.Dtos.Forms.ConsultaForm;
 import lombok.AllArgsConstructor;
 
@@ -14,7 +18,8 @@ public class RegrasDeMarcacaoDeConsulta implements Regra {
     public boolean validar() throws Exception {
         return tempoDeAtecedenciaEstaDentroDoPrazo(consultaForm.getDataHorario())
                 && dentroDosDiasDeFuncionamento(consultaForm.getDataHorario())
-                && dentroDosHorariosDeFuncionamento(consultaForm.getDataHorario());
+                && dentroDosHorariosDeFuncionamento(consultaForm.getDataHorario())
+                && temUmaHoraDisponivel(consultaForm.getDataHorario());
     }
 
     private boolean tempoDeAtecedenciaEstaDentroDoPrazo(LocalDateTime horaMarcada) throws Exception {
@@ -35,6 +40,13 @@ public class RegrasDeMarcacaoDeConsulta implements Regra {
         if (horaMarcada.isBefore(horaMarcada.withHour(7).withMinute(0).withSecond(0))
                 || horaMarcada.isAfter(horaMarcada.withHour(19).withMinute(0).withSecond(0))) {
             throw new Exception("Funcionamos de Segunda a Sexta das 7 as 19");
+        }
+        return true;
+    }
+
+    private boolean temUmaHoraDisponivel(LocalDateTime horaMarcada) {
+        if (horaMarcada.plusHours(1).isAfter(horaMarcada.withHour(19).withMinute(00))) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "O prazo estimado excede as 19 horas");
         }
         return true;
     }
